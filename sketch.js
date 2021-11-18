@@ -8,6 +8,7 @@
 
 
 let snowflakes = []; 
+let snow = false;
 let player;
 
 function setup() {
@@ -23,13 +24,13 @@ function draw() {
 
   player.display();
   player.movement();
+  if(snow){
+    for (let i = 0; i < random(5); i++) {
+      snowflakes.push(new snowflake()); 
+    }
 
-
-
-  for (let i = 0; i < random(5); i++) {
-    snowflakes.push(new snowflake()); 
+    
   }
-
   for (let flake of snowflakes) {
     flake.update(t); 
     flake.display(); 
@@ -93,5 +94,15 @@ class Player{
     if(keyIsDown(DOWN_ARROW)){
       this.y += this.dy;
     }
+    if(keyIsDown(72)){
+      snow = true;
+    }
+    else{
+      snow = false;
+    }
   }
+}
+
+class Wall{
+  
 }
