@@ -12,6 +12,7 @@ I am going to create an Improvement to the Scratch platformer made back in CS20.
 - Health and obsticals
 - Dialouge
 - Animations, or at least sprites made.
+- Music and sound effects, whether or not they are self made or borrowed.
 
 ## Nice to Have List
 - Enemies, maybe even bosses?
