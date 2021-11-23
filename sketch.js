@@ -24,7 +24,10 @@ function draw() {
 
   player.display();
   player.movement();
-  player.gravity();
+  if(!player.jumping){
+    player.gravity();
+  }
+  
   if(snow){
     for (let i = 0; i < random(5); i++) {
       snowflakes.push(new snowflake()); 
@@ -74,6 +77,7 @@ class Player{
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
+    this.jumping = false;
   }
 
   display(){
@@ -84,13 +88,17 @@ class Player{
 
   movement(){
     if(keyIsDown(LEFT_ARROW)){
-      this.x -= this.dx;
+      this.x -= 10;
     }
     if(keyIsDown(RIGHT_ARROW)){
-      this.x += this.dx;
+      this.x += 10;
     }
     if(keyIsDown(UP_ARROW)){
       this.y -= this.dy;
+      this.jumping = true;
+    }
+    else{
+      this.jumping = false;
     }
     if(keyIsDown(72)){
       snow = true;
@@ -99,29 +107,35 @@ class Player{
       snow = false;
     }
 
-    if (this.x > width - this.radius ){
+    if (this.x >= width - this.radius ){
       this.x = width - this.radius;
       this.dx = -this.dx*0.5;
     }
     
     //ball border for left
-    if (this.x < 0 + this.radius){
+    if (this.x <= 0 + this.radius){
       this.x = 0 + this.radius;
       this.dx = -this.dx*0.5;
     }
     
     //ball border for botttom
-    if (this.y > height - this.radius){
+    if (this.y >= height - this.radius){
       this.y = height - this.radius;
       this.dy = -this.dy*0.1;
        
     }
   
     //ball border for top
-    if (this.y < 0 + this.radius){
-      this.y = 0 + this.radius;
-      this.dy = -this.dy*0.7;
+    if(!this.jumping){
+      if (this.y <= 0 + this.radius){
+        this.y = 0+this.radius;
+        this.dy = this.dy*0.1;
+      }
     }
+    else{
+      this.y = 
+    }
+    
   }
   gravity(){
     this.y += 1;
