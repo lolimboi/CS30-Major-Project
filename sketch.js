@@ -10,17 +10,21 @@
 let snowflakes = []; 
 let snow = false;
 let player;
+let testwall;
 
 function setup() {
   createCanvas(windowHeight, windowHeight);
   fill(240);
   noStroke();
   player = new Player(width/2, height/2, 5, 5, 20);
+  testwall = new Wall(50, 50);
 }
 
 function draw() {
   background("brown");
   let t = frameCount / 60; 
+
+  testwall.display();
 
   player.display();
   player.movement();
@@ -94,8 +98,8 @@ class Player{
       this.x += 10;
     }
     if(keyIsDown(UP_ARROW)){
-      this.y -= this.dy;
       this.jumping = true;
+      this.y -= this.dy;
     }
     else{
       this.jumping = false;
@@ -106,42 +110,43 @@ class Player{
     else{
       snow = false;
     }
-
-    if (this.x >= width - this.radius ){
+    //ball border for right
+    if (this.x >width - this.radius ){
       this.x = width - this.radius;
-      this.dx = -this.dx*0.5;
     }
     
     //ball border for left
-    if (this.x <= 0 + this.radius){
+    if (this.x < 0 + this.radius){
       this.x = 0 + this.radius;
-      this.dx = -this.dx*0.5;
     }
     
     //ball border for botttom
-    if (this.y >= height - this.radius){
+    if (this.y > height - this.radius){
       this.y = height - this.radius;
-      this.dy = -this.dy*0.1;
-       
     }
   
     //ball border for top
-    if(!this.jumping){
-      if (this.y <= 0 + this.radius){
-        this.y = 0+this.radius;
-        this.dy = this.dy*0.1;
-      }
-    }
-    else{
-      this.y = 
+    if (this.y < 0 + this.radius){
+      this.y = 0 + this.radius;
     }
     
   }
   gravity(){
-    this.y += 1;
+    this.y += 5;
   }
 }
 
 class Wall{
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.length = 25;
+    this.width = 50;
+    this.wallColor = "black";
+  }
+  display(){
+    fill(this.wallColor);
+    rect(this.x, this.y, this.width, this.length);
+  }
   
 }
