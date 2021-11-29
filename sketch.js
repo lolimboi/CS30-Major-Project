@@ -25,6 +25,8 @@ function draw() {
   let t = frameCount / 60; 
 
   testwall.display();
+  testwall.collision(player);
+
 
   player.display();
   player.movement();
@@ -32,6 +34,8 @@ function draw() {
     player.gravity();
   }
   
+  
+
   if(snow){
     for (let i = 0; i < random(5); i++) {
       snowflakes.push(new snowflake()); 
@@ -143,10 +147,19 @@ class Wall{
     this.length = 25;
     this.width = 50;
     this.wallColor = "black";
+    this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
   }
   display(){
     fill(this.wallColor);
     rect(this.x, this.y, this.width, this.length);
   }
-  
+  collision(player){
+    this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
+    if(this.hit){
+      if (player.y > this.y && player.y < this.y + player.radius){
+        player.y = this.y + player.radius + this.length;
+      }
+      console.log("A");
+    }
+  }
 }
