@@ -22,7 +22,7 @@ function setup() {
 
 function draw() {
   background("brown");
-  let t = frameCount / 60; 
+  
 
   testwall.display();
   testwall.collision(player);
@@ -35,7 +35,7 @@ function draw() {
   }
   
   
-
+  let t = frameCount / 60; 
   if(snow){
     for (let i = 0; i < random(5); i++) {
       snowflakes.push(new snowflake()); 
@@ -115,7 +115,7 @@ class Player{
       snow = false;
     }
     //ball border for right
-    if (this.x >width - this.radius ){
+    if (this.x >width - this.radius){
       this.x = width - this.radius;
     }
     
@@ -144,22 +144,35 @@ class Wall{
   constructor(x, y){
     this.x = x;
     this.y = y;
-    this.length = 25;
+    this.height = 25;
     this.width = 50;
     this.wallColor = "black";
     this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
   }
   display(){
     fill(this.wallColor);
-    rect(this.x, this.y, this.width, this.length);
+    rect(this.x, this.y, this.width, this.height);
   }
   collision(player){
     this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
     if(this.hit){
-      if (player.y > this.y && player.y < this.y + player.radius){
-        player.y = this.y + player.radius + this.length;
+      if (player.y > this.y && player.y <= this.y + this.height + player.radius/2){
+        player.y = this.y + player.radius/2 + this.height;
+        console.log("A");
       }
-      console.log("A");
+      if (player.y < this.y && player.y - player.radius/2 >= this.y){
+        player.y = this.y - player.radius/2 - this.height;
+        console.log("B");
+      }
+      if (player.x > this.x && player.x <= this.x + this.width + player.radius/2){
+        player.x = this.x + player.radius/2 + this.height;
+        console.log("C");
+      }
+      if (player.x < this.x && player.x >= this.x - player.radius/2){
+        player.x = this.x - player.radius/2 - this.height;
+        console.log("D");
+      }
+      
     }
   }
 }
