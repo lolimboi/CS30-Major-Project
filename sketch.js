@@ -17,7 +17,7 @@ function setup() {
   fill(240);
   noStroke();
   player = new Player(width/2, height/2, 5, 5, 20);
-  testwall = new Wall(50, 50);
+  testwall = new Wall(200, 200);
 }
 
 function draw() {
@@ -144,33 +144,33 @@ class Wall{
   constructor(x, y){
     this.x = x;
     this.y = y;
-    this.height = 25;
-    this.width = 50;
+    this.l = 100;
+    this.w = 100;
     this.wallColor = "black";
-    this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
   }
   display(){
     fill(this.wallColor);
-    rect(this.x, this.y, this.width, this.height);
+    rect(this.x, this.y, this.w, this.l);
   }
   collision(player){
-    this.hit = collideRectCircle(this.x, this.y, this.width, this.height, player.x, player.y, player.radius);
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
     if(this.hit){
-      if (player.y > this.y && player.y <= this.y + this.height + player.radius/2){
-        player.y = this.y + player.radius/2 + this.height;
-        console.log("A");
+      if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y + player.radius/2 + this.l;
+        console.log("Bottom");
       }
-      if (player.y < this.y && player.y - player.radius/2 >= this.y){
-        player.y = this.y - player.radius/2 - this.height;
-        console.log("B");
+      if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y - player.radius/2;
+        console.log("Top");
       }
-      if (player.x > this.x && player.x <= this.x + this.width + player.radius/2){
-        player.x = this.x + player.radius/2 + this.height;
-        console.log("C");
+      if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y > this.y && player.y < this.y + this.l){
+        player.x = this.x + player.radius/2 + this.w;
+        console.log("Right");
       }
-      if (player.x < this.x && player.x >= this.x - player.radius/2){
-        player.x = this.x - player.radius/2 - this.height;
-        console.log("D");
+      if (player.x < this.x && player.x >= this.x - player.radius/2 && player.y > this.y && player.y < this.y + this.l){
+        player.x = this.x - player.radius/2;
+        console.log("Left");
       }
       
     }
