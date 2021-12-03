@@ -156,23 +156,22 @@ class Wall{
   collision(player){
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
     if(this.hit){
-      if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
-        player.y = this.y + player.radius/2 + this.l;
-        console.log("Bottom");
-      }
-      if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
-        player.y = this.y - player.radius/2;
-        console.log("Top");
-      }
-      if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y > this.y && player.y < this.y + this.l){
-        player.x = this.x + player.radius/2 + this.w;
-        console.log("Right");
-      }
-      if (player.x < this.x && player.x >= this.x - player.radius/2 && player.y > this.y && player.y < this.y + this.l){
+      if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
         console.log("Left");
       }
-      
+      else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
+        player.x = this.x + player.radius/2 + this.w;
+        console.log("Right");
+      }
+      else if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y + player.radius/2 + this.l;
+        console.log("Bottom");
+      }
+      else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y - player.radius/2;
+        console.log("Top");
+      }
     }
   }
 }
