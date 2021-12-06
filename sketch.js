@@ -11,21 +11,30 @@ let snowflakes = [];
 let snow = false;
 let player;
 let testwall;
+let wallArray = [];
 
 function setup() {
   createCanvas(windowHeight, windowHeight);
   fill(240);
   noStroke();
   player = new Player(width/2, height/2, 5, 5, 20);
-  testwall = new Wall(200, 200);
+  
+  for(let i = 0; i < windowHeight/100; i++){
+    let x = random(100, 200);
+    let y = i*100;
+    testwall = new Wall(x, y);
+    wallArray.push(testwall);
+  }
 }
 
 function draw() {
   background("brown");
   
-
-  testwall.display();
-  testwall.collision(player);
+  for(let testwall of  wallArray){
+    testwall.display();
+    testwall.collision(player);
+  }
+  
 
 
   player.display();
@@ -144,7 +153,7 @@ class Wall{
   constructor(x, y){
     this.x = x;
     this.y = y;
-    this.l = 100;
+    this.l = 10;
     this.w = 100;
     this.wallColor = "black";
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
