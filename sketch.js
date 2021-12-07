@@ -8,20 +8,21 @@
 
 
 let snowflakes = []; 
-let snow = false;
-let player;
-let testwall;
+let player, testwall, snow;
 let wallArray = [];
 
 function setup() {
   createCanvas(windowHeight, windowHeight);
+  //sets snow to false
+  snow = false;
+  //makes a player
   fill(240);
   noStroke();
   player = new Player(width/2, height/2, 5, 5, 20);
-  
+  //creates a random set of platforms
   for(let i = 0; i < windowHeight/100; i++){
-    let x = random(100, 200);
-    let y = i*100;
+    let x = random(0, windowHeight-100);
+    let y = i*100 +100;
     testwall = new Wall(x, y);
     wallArray.push(testwall);
   }
@@ -29,21 +30,21 @@ function setup() {
 
 function draw() {
   background("brown");
-  
+  //displays and sets collisions for platforms 
   for(let testwall of  wallArray){
     testwall.display();
     testwall.collision(player);
   }
   
 
-
+  //displays player, allows movement, and sets gravity
   player.display();
   player.movement();
   if(!player.jumping){
     player.gravity();
   }
   
-  
+  //allows snow to be created when h is pressed
   let t = frameCount / 60; 
   if(snow){
     for (let i = 0; i < random(5); i++) {
@@ -58,7 +59,7 @@ function draw() {
   }
 }
 
-
+//snowflake creation and behaviour
 function snowflake() {
 
   this.posX = 0;
@@ -87,6 +88,7 @@ function snowflake() {
   };
 }
 
+//player creation and behaviour
 class Player{
   constructor(x, y, dx, dy, radius){
     this.x = x;
@@ -149,6 +151,7 @@ class Player{
   }
 }
 
+//wall/platform creation and behaviour
 class Wall{
   constructor(x, y){
     this.x = x;
