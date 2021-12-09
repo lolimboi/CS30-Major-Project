@@ -147,7 +147,7 @@ class Player{
     
   }
   gravity(){
-    this.y += 9;
+    this.y += 9.9999999999999;
   }
 }
 
