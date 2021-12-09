@@ -147,7 +147,7 @@ class Player{
     
   }
   gravity(){
-    this.y += 5;
+    this.y += 9;
   }
 }
 
@@ -156,7 +156,7 @@ class Wall{
   constructor(x, y){
     this.x = x;
     this.y = y;
-    this.l = 10;
+    this.l = 20;
     this.w = 100;
     this.wallColor = "black";
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
@@ -176,7 +176,7 @@ class Wall{
         player.x = this.x + player.radius/2 + this.w;
         console.log("Right");
       }
-      else if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
+      if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y + player.radius/2 + this.l;
         console.log("Bottom");
       }
