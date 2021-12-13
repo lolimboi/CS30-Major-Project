@@ -97,12 +97,19 @@ class Player{
     this.dy = dy;
     this.radius = radius;
     this.jumping = false;
+    this.jumpheight = 0;
   }
 
   display(){
     noStroke();
     fill("green");
     circle(this.x, this.y, this.radius);
+  }
+
+  keyPressed(){
+    if(key === UP_ARROW){
+      this.jumpheight = this.y;
+    }
   }
 
   movement(){
@@ -114,10 +121,14 @@ class Player{
     }
     if(keyIsDown(UP_ARROW)){
       this.jumping = true;
-      this.y -= this.dy;
-    }
-    else{
-      this.jumping = false;
+      if(this.jumping){
+        this.y -= this.dy;
+        if(this.jumpheight + 10 <= this.y){
+          this.jumping = !this.jumping;
+          console.log("aaaaaaa");
+        }
+      }
+      
     }
     if(keyIsDown(72)){
       snow = true;
@@ -147,9 +158,14 @@ class Player{
     
   }
   gravity(){
-    this.y += 9.9999999999999;
+    if(!this.jumping){
+      this.y += 9.9999999999999;
+    }
+    
   }
+    
 }
+
 
 //wall/platform creation and behaviour
 class Wall{
