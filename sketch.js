@@ -36,13 +36,14 @@ function draw() {
     testwall.collision(player);
   }
   
+  
 
   //displays player, allows movement, and sets gravity
   player.display();
+  player.keyPressed();
   player.movement();
-  if(!player.jumping){
-    player.gravity();
-  }
+  player.gravity();
+
   
   //allows snow to be created when h is pressed
   let t = frameCount / 60; 
@@ -107,8 +108,10 @@ class Player{
   }
 
   keyPressed(){
-    if(key === UP_ARROW){
+    if(keyCode === UP_ARROW){
       this.jumpheight = this.y;
+      this.jumping = true;
+      
     }
   }
 
@@ -120,14 +123,15 @@ class Player{
       this.x += 10;
     }
     if(keyIsDown(UP_ARROW)){
-      this.jumping = true;
       if(this.jumping){
         this.y -= this.dy;
-        if(this.jumpheight + 10 <= this.y){
-          this.jumping = !this.jumping;
-          console.log("aaaaaaa");
-        }
+        
       }
+      if(this.jumpheight - 20 <= this.y){
+        this.jumping = false;
+        console.log("aaaaaaa");
+      }
+     
       
     }
     if(keyIsDown(72)){
@@ -157,13 +161,12 @@ class Player{
     }
     
   }
+  
   gravity(){
     if(!this.jumping){
-      this.y += 9.9999999999999;
+      this.y += 9.9999999999999; 
     }
-    
   }
-    
 }
 
 
