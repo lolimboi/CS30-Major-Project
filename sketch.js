@@ -40,7 +40,7 @@ function draw() {
 
   //displays player, allows movement, and sets gravity
   player.display();
-  player.keyPressed();
+  // player.keyPressed();
   player.movement();
   player.gravity();
 
@@ -58,6 +58,10 @@ function draw() {
     flake.update(t); 
     flake.display(); 
   }
+}
+
+function keyPressed() {
+  player.handleKeys();
 }
 
 //snowflake creation and behaviour
@@ -107,11 +111,12 @@ class Player{
     circle(this.x, this.y, this.radius);
   }
 
-  keyPressed(){
+  handleKeys(){
     if(keyCode === UP_ARROW){
+      console.log("set jump height");
       this.jumpheight = this.y;
-      this.jumping = true;
       
+      this.jumping = true;
     }
   }
 
@@ -125,14 +130,11 @@ class Player{
     if(keyIsDown(UP_ARROW)){
       if(this.jumping){
         this.y -= this.dy;
-        
       }
-      if(this.jumpheight - 20 <= this.y){
+      if(this.jumpheight - 50 >= this.y){
         this.jumping = false;
-        console.log("aaaaaaa");
+        //console.log("aaaaaaa");
       }
-     
-      
     }
     if(keyIsDown(72)){
       snow = true;
@@ -189,19 +191,19 @@ class Wall{
     if(this.hit){
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
-        console.log("Left");
+        //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
-        console.log("Right");
+        //console.log("Right");
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y + player.radius/2 + this.l;
-        console.log("Bottom");
+        //console.log("Bottom");
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y - player.radius/2;
-        console.log("Top");
+        //console.log("Top");
       }
     }
   }
