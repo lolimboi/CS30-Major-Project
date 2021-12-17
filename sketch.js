@@ -131,10 +131,13 @@ class Player{
       if(this.jumping){
         this.y -= this.dy;
       }
-      if(this.jumpheight - 50 >= this.y){
+      if(this.jumpheight - 150 >= this.y){
         this.jumping = false;
         //console.log("aaaaaaa");
       }
+    }
+    else{
+      this.jumping = false;
     }
     if(keyIsDown(72)){
       snow = true;
