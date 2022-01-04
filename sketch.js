@@ -103,6 +103,7 @@ class Player{
     this.radius = radius;
     this.jumping = false;
     this.jumpheight = 0;
+    this.jumpingInProgress = false;
   }
 
   display(){
@@ -128,12 +129,19 @@ class Player{
       this.x += 10;
     }
     if(keyIsDown(UP_ARROW)){
+      if(!this.jumpingInProgress){
+        this.jumpingInProgress = true;
+      }
       if(this.jumping){
         this.y -= this.dy;
       }
+      else if( )
       if(this.jumpheight - 150 >= this.y){
         this.jumping = false;
         //console.log("aaaaaaa");
+      }
+      if(this.y === this.jumpheight && this.jumping === false){
+
       }
     }
     else{
@@ -169,7 +177,7 @@ class Player{
   
   gravity(){
     if(!this.jumping){
-      this.y += 9.9999999999999; 
+      this.y += 7; 
     }
   }
 }
