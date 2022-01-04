@@ -18,7 +18,7 @@ function setup() {
   //makes a player
   fill(240);
   noStroke();
-  player = new Player(width/2, height/2, 5, 5, 20);
+  player = new Player(width/2, height/2, 8, 8, 20);
   //creates a random set of platforms
   for(let i = 0; i < windowHeight/100; i++){
     let x = random(0, windowHeight-100);
@@ -116,7 +116,7 @@ class Player{
     if(keyCode === UP_ARROW){
       console.log("set jump height");
       this.jumpheight = this.y;
-      
+      this.jumpingInProgress = true;
       this.jumping = true;
     }
   }
@@ -137,6 +137,7 @@ class Player{
       }
       else if( )
       if(this.jumpheight - 150 >= this.y){
+        this.jumpingInProgress = false;
         this.jumping = false;
         //console.log("aaaaaaa");
       }
