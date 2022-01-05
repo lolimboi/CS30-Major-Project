@@ -45,6 +45,7 @@ module.exports = {
       "clearStorage": true,
       "removeItem": true,
       
+      "deltaTime": true,
       "remove": true,
       "canvas": true,
       "width": true,
