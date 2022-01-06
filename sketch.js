@@ -187,7 +187,7 @@ class Wall{
   constructor(x, y){
     this.x = x;
     this.y = y;
-    this.l = 20;
+    this.l = 100;
     this.w = 100;
     this.wallColor = "black";
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
