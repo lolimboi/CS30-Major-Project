@@ -18,7 +18,7 @@ function setup() {
   //makes a player
   fill(240);
   noStroke();
-  player = new Player(width/2, height/2, 8, 8, 20);
+  player = new Player(width/2, height/2, 10, 12, 20);
   //creates a random set of platforms
   for(let i = 0; i < windowHeight/100; i++){
     let x = random(0, windowHeight-100);
@@ -26,6 +26,7 @@ function setup() {
     testwall = new Wall(x, y);
     wallArray.push(testwall);
   }
+  frameRate(50);
 }
 
 function draw() {
@@ -46,7 +47,7 @@ function draw() {
 
   
   //allows snow to be created when h is pressed
-  let t = frameCount / 60; 
+  let t = frameCount / 30; 
   if(snow){
     for (let i = 0; i < random(5); i++) {
       snowflakes.push(new snowflake()); 
@@ -118,6 +119,7 @@ class Player{
       this.jumpheight = this.y;
       this.jumpingInProgress = true;
       this.jumping = true;
+      
     }
   }
 
@@ -128,20 +130,50 @@ class Player{
     if(keyIsDown(RIGHT_ARROW)){
       this.x += 10;
     }
+    // if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
     if(keyIsDown(UP_ARROW)){
-      if(this.jumping){
-        this.y -= this.dy;
-      }
-      //else if( )
-      if(this.jumpheight - 150 >= this.y){
-        this.jumpingInProgress = false;
-        this.jumping = false;
-        //console.log("aaaaaaa");
-      }
-      if(this.y === this.jumpheight && this.jumping === false){
-
-      }
+      this.dy += 0.2 * (deltaTime/10);     
+      this.x += this.dx * (deltaTime/10);    
+      this.y += this.dy * (deltaTime/10); 
+      
+      // if(this.jumping){
+      //   this.y -= this.dy;
+      // }
+      // if(this.jumpingInProgress){
+      //   this.x -= this.dx;
+      // }
+      // if(this.jumpheight - 150 >= this.y){
+      //   this.jumpingInProgress = false;
+      //   this.jumping = false;
+      //   //console.log("aaaaaaa");
+    // else if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
+      // this.dy += 9 * deltaTime;     
+      // this.x += this.dx * deltaTime;    
+      // this.y += this.dy * deltaTime; 
+      // if(this.jumping){
+      //   this.y -= this.dy;
+      // }
+      // if(this.jumpingInProgress){
+      //   this.x += this.dx;
+      // }
+      // if(this.jumpheight - 150 >= this.y){
+      //   this.jumpingInProgress = false;
+      //   this.jumping = false;
+      //console.log("aaaaaaa");
     }
+    // if(keyIsDown(UP_ARROW)){
+    //   // this.dy += 9 * deltaTime;     
+    //   // this.x += this.dx * deltaTime;    
+    //   // this.y += this.dy * deltaTime; 
+    //   if(this.jumping){
+    //     this.y -= this.dy;
+    //   }
+    //   if(this.jumpheight - 150 >= this.y){
+    //     this.jumpingInProgress = false;
+    //     this.jumping = false;
+    //     //console.log("aaaaaaa");
+    //   }
+    // }
     else{
       this.jumping = false;
     }
@@ -175,10 +207,12 @@ class Player{
   
   gravity(){
     if(!this.jumping){
-      this.y += 7; 
+      this.y += 9;
     }
+      
   }
 }
+
 
 
 //wall/platform creation and behaviour
