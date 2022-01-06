@@ -105,6 +105,9 @@ class Player{
     this.jumping = false;
     this.jumpheight = 0;
     this.jumpingInProgress = false;
+    this.jumplength = 10;
+    this.direction = -1;
+    this.timesJumped = 0;
   }
 
   display(){
@@ -119,7 +122,8 @@ class Player{
       this.jumpheight = this.y;
       this.jumpingInProgress = true;
       this.jumping = true;
-      
+      this.jumplength = 10;
+      this.direction = -1;
     }
   }
 
@@ -130,52 +134,25 @@ class Player{
     if(keyIsDown(RIGHT_ARROW)){
       this.x += 10;
     }
-    // if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
-    if(keyIsDown(UP_ARROW)){
-      this.dy += 0.2 * (deltaTime/10);     
-      this.x += this.dx * (deltaTime/10);    
-      this.y += this.dy * (deltaTime/10); 
-      
-      // if(this.jumping){
-      //   this.y -= this.dy;
-      // }
-      // if(this.jumpingInProgress){
-      //   this.x -= this.dx;
-      // }
-      // if(this.jumpheight - 150 >= this.y){
-      //   this.jumpingInProgress = false;
-      //   this.jumping = false;
-      //   //console.log("aaaaaaa");
-    // else if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
-      // this.dy += 9 * deltaTime;     
-      // this.x += this.dx * deltaTime;    
-      // this.y += this.dy * deltaTime; 
-      // if(this.jumping){
-      //   this.y -= this.dy;
-      // }
-      // if(this.jumpingInProgress){
-      //   this.x += this.dx;
-      // }
-      // if(this.jumpheight - 150 >= this.y){
-      //   this.jumpingInProgress = false;
-      //   this.jumping = false;
-      //console.log("aaaaaaa");
-    }
-    // if(keyIsDown(UP_ARROW)){
-    //   // this.dy += 9 * deltaTime;     
-    //   // this.x += this.dx * deltaTime;    
-    //   // this.y += this.dy * deltaTime; 
-    //   if(this.jumping){
-    //     this.y -= this.dy;
-    //   }
-    //   if(this.jumpheight - 150 >= this.y){
-    //     this.jumpingInProgress = false;
-    //     this.jumping = false;
-    //     //console.log("aaaaaaa");
-    //   }
-    // }
-    else{
-      this.jumping = false;
+    if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
+      if(this.timesJumped === 0){
+        this.timesjumped += 1;
+        console.log("step 1");
+        this.x += 1;
+        this.y += 0.5 * this.jumplength * this.direction;
+        if(this.jumplength < 0 && this.direction < 0){
+          this.direction = 1;
+          console.log("going down");
+        }
+        if(this.direction > 0){
+          this.jumplength += 1;
+          console.log("down");
+        }
+        else{
+          this.jumplength -= 1;
+          console.log("up");
+        }
+      }
     }
     if(keyIsDown(72)){
       snow = true;
@@ -187,33 +164,23 @@ class Player{
     if (this.x >width - this.radius){
       this.x = width - this.radius;
     }
-    
     //ball border for left
     if (this.x < 0 + this.radius){
       this.x = 0 + this.radius;
     }
-    
     //ball border for botttom
     if (this.y > height - this.radius){
       this.y = height - this.radius;
     }
-  
     //ball border for top
     if (this.y < 0 + this.radius){
       this.y = 0 + this.radius;
-    }
-    
+    } 
   }
-  
   gravity(){
-    if(!this.jumping){
-      this.y += 9;
-    }
-      
+    this.y += 1;
   }
 }
-
-
 
 //wall/platform creation and behaviour
 class Wall{
@@ -234,10 +201,12 @@ class Wall{
     if(this.hit){
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
+        player.timesJumped = 0;
         //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
+        player.timesJumped = 0;
         //console.log("Right");
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
@@ -246,6 +215,7 @@ class Wall{
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y - player.radius/2;
+        player.timesJumped = 0;
         //console.log("Top");
       }
     }
