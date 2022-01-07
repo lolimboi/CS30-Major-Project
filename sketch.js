@@ -102,9 +102,6 @@ class Player{
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
-    this.jumping = false;
-    this.jumpheight = 0;
-    this.jumpingInProgress = false;
     this.jumplength = 10;
     this.direction = -1;
     this.timesJumped = 0;
@@ -118,11 +115,7 @@ class Player{
 
   handleKeys(){
     if(keyCode === UP_ARROW){
-      console.log("set jump height");
-      this.jumpheight = this.y;
-      this.jumpingInProgress = true;
-      this.jumping = true;
-      this.jumplength = 10;
+      this.jumplength = 20;
       this.direction = -1;
     }
   }
@@ -137,9 +130,8 @@ class Player{
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
         this.timesjumped += 1;
-        console.log("step 1");
         this.x += 1;
-        this.y += 0.5 * this.jumplength * this.direction;
+        this.y += 0.7 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
           console.log("going down");
@@ -152,6 +144,16 @@ class Player{
           this.jumplength -= 1;
           console.log("up");
         }
+      }
+    }
+    else{
+      if(this.direction > 0){
+        this.jumplength += 1;
+        console.log("down");
+      }
+      else{
+        this.jumplength -= 1;
+        console.log("up");
       }
     }
     if(keyIsDown(72)){
@@ -178,7 +180,7 @@ class Player{
     } 
   }
   gravity(){
-    this.y += 1;
+    this.y += 2;
   }
 }
 
