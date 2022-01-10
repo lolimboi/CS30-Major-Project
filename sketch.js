@@ -18,10 +18,10 @@ function setup() {
   //makes a player
   fill(240);
   noStroke();
-  player = new Player(width/2, height/2, 10, 12, 20);
+  player = new Player(width/2, height/2, 10, 12, 30);
   //creates a random set of platforms
   for(let i = 0; i < windowHeight/100; i++){
-    let x = random(0, windowHeight-100);
+    let x = 100;
     let y = i*100 +100;
     testwall = new Wall(x, y);
     wallArray.push(testwall);
@@ -41,7 +41,6 @@ function draw() {
 
   //displays player, allows movement, and sets gravity
   player.display();
-  // player.keyPressed();
   player.movement();
   player.gravity();
 
@@ -63,6 +62,10 @@ function draw() {
 
 function keyPressed() {
   player.handleKeys();
+}
+
+function keyReleased(){
+  player.handleKeys2();
 }
 
 //snowflake creation and behaviour
@@ -102,7 +105,7 @@ class Player{
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
-    this.jumplength = 10;
+    this.jumplength = 0;
     this.direction = -1;
     this.timesJumped = 0;
   }
@@ -115,8 +118,14 @@ class Player{
 
   handleKeys(){
     if(keyCode === UP_ARROW){
-      this.jumplength = 20;
+      this.jumplength = 15;
       this.direction = -1;
+    }
+  }
+
+  handleKeys2(){
+    if(keyCode === UP_ARROW){
+      this.timesJumped++;
     }
   }
 
@@ -129,31 +138,52 @@ class Player{
     }
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
-        this.timesjumped += 1;
+        
+        console.log(this.timesJumped);
         this.x += 1;
-        this.y += 0.7 * this.jumplength * this.direction;
+        this.y += 1 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
-          console.log("going down");
         }
         if(this.direction > 0){
           this.jumplength += 1;
-          console.log("down");
         }
         else{
           this.jumplength -= 1;
-          console.log("up");
         }
       }
     }
-    else{
-      if(this.direction > 0){
-        this.jumplength += 1;
-        console.log("down");
+    if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
+      if(this.timesJumped === 0){
+        
+        console.log(this.timesJumped);
+        this.x -= 1;
+        this.y += 1 * this.jumplength * this.direction;
+        if(this.jumplength < 0 && this.direction < 0){
+          this.direction = 1;
+        }
+        if(this.direction > 0){
+          this.jumplength += 1;
+        }
+        else{
+          this.jumplength -= 1;
+        }
       }
-      else{
-        this.jumplength -= 1;
-        console.log("up");
+    }
+    if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
+      if(this.timesJumped === 0){
+        
+        console.log(this.timesJumped);
+        this.y += 1 * this.jumplength * this.direction;
+        if(this.jumplength < 0 && this.direction < 0){
+          this.direction = 1;
+        }
+        if(this.direction > 0){
+          this.jumplength += 1;
+        }
+        else{
+          this.jumplength -= 1;
+        }
       }
     }
     if(keyIsDown(72)){
