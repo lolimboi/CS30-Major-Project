@@ -1,6 +1,6 @@
-// Project Title
-// Your Name
-// Date
+// Hopguy
+// Logan Weckert
+// 1/11/2022
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
@@ -8,7 +8,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, snow;
+let player, testwall, testwall2, snow;
 let wallArray = [];
 
 function setup() {
@@ -21,12 +21,18 @@ function setup() {
   player = new Player(width/2, height/2, 10, 12, 30);
   //creates a random set of platforms
   for(let i = 0; i < windowHeight/100; i++){
-    let x = 100;
+    let x = 200;
     let y = i*100 +100;
     testwall = new Wall(x, y);
     wallArray.push(testwall);
   }
-  frameRate(50);
+  for(let i = 0; i < windowHeight/100; i++){
+    let x = 500;
+    let y = i*100 +100;
+    testwall2 = new Wall(x, y);
+    wallArray.push(testwall2);
+  }
+  frameRate(60);
 }
 
 function draw() {
@@ -37,6 +43,10 @@ function draw() {
     testwall.collision(player);
   }
   
+  for(let testwall2 of  wallArray){
+    testwall2.display();
+    testwall2.collision(player);
+  }
   
 
   //displays player, allows movement, and sets gravity
@@ -108,6 +118,7 @@ class Player{
     this.jumplength = 0;
     this.direction = -1;
     this.timesJumped = 0;
+    this.jumping = false;
   }
 
   display(){
@@ -120,22 +131,29 @@ class Player{
     if(keyCode === UP_ARROW){
       this.jumplength = 15;
       this.direction = -1;
+      if(this.timesJumped === 0){
+        this.jumping = true;
+      }
     }
   }
 
   handleKeys2(){
     if(keyCode === UP_ARROW){
       this.timesJumped++;
+      this.jumping = false;
     }
   }
 
   movement(){
+    //left movement
     if(keyIsDown(LEFT_ARROW)){
       this.x -= 10;
     }
+    //right movement
     if(keyIsDown(RIGHT_ARROW)){
       this.x += 10;
     }
+    //right jump
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
         
@@ -153,6 +171,7 @@ class Player{
         }
       }
     }
+    //left jump
     if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
       if(this.timesJumped === 0){
         
@@ -170,6 +189,7 @@ class Player{
         }
       }
     }
+    //upwards jump
     if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
         
@@ -186,6 +206,7 @@ class Player{
         }
       }
     }
+    //snow effect NEED TO REMOVE
     if(keyIsDown(72)){
       snow = true;
     }
@@ -210,7 +231,9 @@ class Player{
     } 
   }
   gravity(){
-    this.y += 2;
+    if(!this.jumping){
+      this.y += 7;
+    }
   }
 }
 
