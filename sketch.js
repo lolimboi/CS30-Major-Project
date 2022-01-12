@@ -8,45 +8,40 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow;
-let wallArray = [];
+let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1;
+let wallArray;
+
+function preload(){
+  jumpRightimg = loadImage("assets/jumpright.png");
+  jumpLeftImg = loadImage("assets/jumpleft.png");
+  walkLeftImg = loadImage("assets/walkleft.png");
+  walkRightImg = loadImage("assets/walkright.png");
+  standImg = loadImage("assets/standingstill.png");
+  level1 = loadJSON("assets/level1.json");
+}
 
 function setup() {
   createCanvas(windowHeight, windowHeight);
   //sets snow to false
   snow = false;
+  
+  wallArray = level1;
   //makes a player
   fill(240);
   noStroke();
-  player = new Player(width/2, height/2, 10, 12, 30);
+  player = new Player(width/2, height/2, 10, 12, 30, standImg);
   //creates a random set of platforms
-  for(let i = 0; i < windowHeight/100; i++){
-    let x = 200;
-    let y = i*100 +100;
-    testwall = new Wall(x, y);
-    wallArray.push(testwall);
-  }
-  for(let i = 0; i < windowHeight/100; i++){
-    let x = 500;
-    let y = i*100 +100;
-    testwall2 = new Wall(x, y);
-    wallArray.push(testwall2);
-  }
   frameRate(60);
 }
 
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
-  for(let testwall of  wallArray){
-    testwall.display();
-    testwall.collision(player);
-  }
+  testwall.display();
+  testwall.collision(player);
   
-  for(let testwall2 of  wallArray){
-    testwall2.display();
-    testwall2.collision(player);
-  }
+  testwall2.display();
+  testwall2.collision(player);
   
 
   //displays player, allows movement, and sets gravity
@@ -109,7 +104,7 @@ function snowflake() {
 
 //player creation and behaviour
 class Player{
-  constructor(x, y, dx, dy, radius){
+  constructor(x, y, dx, dy, radius, thisImage){
     this.x = x;
     this.y = y;
     this.dx = dx;
@@ -119,12 +114,14 @@ class Player{
     this.direction = -1;
     this.timesJumped = 0;
     this.jumping = false;
+    this.sprite = thisImage;
   }
 
   display(){
     noStroke();
-    fill("green");
+    noFill();
     circle(this.x, this.y, this.radius);
+    image(this.sprite, this.x-this.radius/2, this.y-this.radius/2, this.radius, this.radius);
   }
 
   handleKeys(){
