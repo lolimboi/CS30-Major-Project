@@ -9,7 +9,7 @@
 
 let snowflakes = []; 
 let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1;
-let wallArray;
+let wallArray, wallArray0;
 
 function preload(){
   jumpRightimg = loadImage("assets/jumpright.png");
@@ -25,7 +25,12 @@ function setup() {
   //sets snow to false
   snow = false;
   
-  wallArray = level1;
+  wallArray0 = level1;
+  wallArray = [];
+  for(let protowall in wallArray0){
+    let testwall = new Wall(wallArray[protowall].x, wallArray[protowall].y);
+    wallArray.push(testwall);
+  }
   //makes a player
   fill(240);
   noStroke();
@@ -37,11 +42,12 @@ function setup() {
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
-  testwall.display();
-  testwall.collision(player);
+  for(let testwall in wallArray){
+    testwall.display();
+    testwall.collision(player);
+  }
   
-  testwall2.display();
-  testwall2.collision(player);
+  
   
 
   //displays player, allows movement, and sets gravity
