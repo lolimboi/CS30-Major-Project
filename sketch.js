@@ -28,7 +28,7 @@ function setup() {
   wallArray0 = level1;
   wallArray = [];
   for(let protowall in wallArray0){
-    let testwall = new Wall(wallArray[protowall].x, wallArray[protowall].y);
+    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y);
     wallArray.push(testwall);
   }
   //makes a player
@@ -42,10 +42,10 @@ function setup() {
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
-  for(let testwall in wallArray){
-    testwall.display();
-    testwall.collision(player);
-  }
+  // for(let testwall in wallArray){
+  //   testwall.display();
+  //   testwall.collision(player);
+  // }
   
   
   
