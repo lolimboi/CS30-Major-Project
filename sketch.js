@@ -24,25 +24,27 @@ function setup() {
   createCanvas(windowHeight, windowHeight);
   //sets snow to false
   snow = false;
-
+  //makes a player
+  fill(240);
+  noStroke();
+  player = new Player(width/2, height/2, 10, 12, 30, standImg);
+  
   wallArray0 = level1;
   wallArray = [];
   for(let protowall in wallArray0){
     let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y);
     wallArray.push(testwall);
   }
-  //makes a player
-  fill(240);
-  noStroke();
-  player = new Player(width/2, height/2, 10, 12, 30, standImg);
-  //creates a random set of platforms
-  frameRate(60);
+  
+  
+ 
+  frameRate(50);
 }
 
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
-  for(let testwall in wallArray){
+  for(let testwall of wallArray){
     testwall.display();
     testwall.collision(player);
   }
