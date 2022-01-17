@@ -24,7 +24,7 @@ function setup() {
   createCanvas(windowHeight, windowHeight);
   //sets snow to false
   snow = false;
-  
+
   wallArray0 = level1;
   wallArray = [];
   for(let protowall in wallArray0){
@@ -42,10 +42,10 @@ function setup() {
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
-  // for(let testwall in wallArray){
-  //   testwall.display();
-  //   testwall.collision(player);
-  // }
+  for(let testwall in wallArray){
+    testwall.display();
+    testwall.collision(player);
+  }
   
   
   
