@@ -8,7 +8,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1;
+let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4;
 let wallArray, wallArray0;
 
 function preload(){
@@ -18,6 +18,7 @@ function preload(){
   walkRightImg = loadImage("assets/walkright.png");
   standImg = loadImage("assets/standingstill.png");
   level1 = loadJSON("assets/level1.json");
+  level2 = loadJSON("assets/level2.json");
 }
 
 function setup() {
@@ -31,19 +32,20 @@ function setup() {
   
   wallArray0 = level1;
   wallArray = [];
-  for(let protowall in wallArray0){
-    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y);
-    wallArray.push(testwall);
-  }
+  
   
   
  
-  frameRate(50);
+  frameRate(48);
 }
 
 function draw() {
   background("brown");
   //displays and sets collisions for platforms 
+  for(let protowall in wallArray0){
+    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y);
+    wallArray.push(testwall);
+  }
   for(let testwall of wallArray){
     testwall.display();
     testwall.collision(player);
@@ -219,8 +221,13 @@ class Player{
       snow = false;
     }
     //ball border for right
-    if (this.x >width - this.radius){
-      this.x = width - this.radius;
+    if (this.x > width - this.radius){
+      wallArray = [];
+      if(wallArray0 === level1){
+        wallArray0 = level2;
+      }
+      
+      this.x = 0 + this.radius;
     }
     //ball border for left
     if (this.x < 0 + this.radius){
