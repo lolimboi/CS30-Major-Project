@@ -3,64 +3,8 @@
     "x": 0,
     "y": 700,
     "l": 100,
-    "w": 100,
+    "w": 800,
     "wallColor": "black",
     "hit": true
-  },
-  {
-    "x": 100,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 200,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 300,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 400,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 500,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 600,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
-  },
-  {
-    "x": 700,
-    "y": 700,
-    "l": 100,
-    "w": 100,
-    "wallColor": "black",
-    "hit": false
   }
 ]

@@ -1,17 +1,25 @@
 [
   {
     "x": 0,
-    "y": 700,
+    "y": 0,
     "l": 100,
     "w": 500,
     "wallColor": "black",
-    "hit": true
+    "hit": false
   },
   {
     "x": 700,
+    "y": 0,
+    "l": 800,
+    "w": 100,
+    "wallColor": "black",
+    "hit": false
+  },
+  {
+    "x": 0,
     "y": 700,
     "l": 100,
-    "w": 100,
+    "w": 800,
     "wallColor": "black",
     "hit": false
   }

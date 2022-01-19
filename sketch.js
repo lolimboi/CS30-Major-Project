@@ -19,6 +19,8 @@ function preload(){
   standImg = loadImage("assets/standingstill.png");
   level1 = loadJSON("assets/level1.json");
   level2 = loadJSON("assets/level2.json");
+  level3 = loadJSON("assets/level3.json");
+  level4 = loadJSON("assets/level4.json");
 }
 
 function setup() {
@@ -43,7 +45,7 @@ function draw() {
   background("brown");
   //displays and sets collisions for platforms 
   for(let protowall in wallArray0){
-    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y);
+    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y, wallArray0[protowall].l, wallArray0[protowall].w);
     wallArray.push(testwall);
   }
   for(let testwall of wallArray){
@@ -231,15 +233,33 @@ class Player{
     }
     //ball border for left
     if (this.x < 0 + this.radius){
-      this.x = 0 + this.radius;
+      wallArray = [];
+      if(wallArray0 === level2){
+        wallArray0 = level1;
+      }
+      this.x = windowHeight - this.radius;
     }
-    //ball border for botttom
+    //ball border for bottom
     if (this.y > height - this.radius){
-      this.y = height - this.radius;
+      wallArray = [];
+      if(wallArray0 === level2){
+        wallArray0 = level3;
+      }
+      else if(wallArray0 === level3){
+        wallArray0 = level4;
+      }
+      this.y = 0 + this.radius;
     }
     //ball border for top
     if (this.y < 0 + this.radius){
-      this.y = 0 + this.radius;
+      wallArray=[];
+      if(wallArray0 === level3){
+        wallArray0 = level2;
+      }
+      else if(wallArray0 === level4){
+        wallArray0 = level3;
+      }
+      this.y = windowHeight - this.radius;
     } 
   }
   gravity(){
@@ -251,11 +271,11 @@ class Player{
 
 //wall/platform creation and behaviour
 class Wall{
-  constructor(x, y){
+  constructor(x, y, l, w){
     this.x = x;
     this.y = y;
-    this.l = 100;
-    this.w = 100;
+    this.l = l;
+    this.w = w;
     this.wallColor = "black";
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
   }
