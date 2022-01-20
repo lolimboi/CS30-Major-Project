@@ -1,0 +1,18 @@
+[
+  {
+    "x": 0,
+    "y": 0,
+    "l": 800,
+    "w": 100,
+    "wallColor": "black",
+    "hit": false
+  },
+  {
+    "x": 300,
+    "y": 0,
+    "l": 800,
+    "w": 500,
+    "wallColor": "black",
+    "hit": false
+  }
+]

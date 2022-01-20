@@ -8,7 +8,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4;
+let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, level24;
 let wallArray, wallArray0;
 
 function preload(){
@@ -21,10 +21,31 @@ function preload(){
   level2 = loadJSON("assets/level2.json");
   level3 = loadJSON("assets/level3.json");
   level4 = loadJSON("assets/level4.json");
+  level5 = loadJSON("assets/level5.json");
+  level5b = loadJSON("assets/level5b.json");
+  level6 = loadJSON("assets/level6.json");
+  level7 = loadJSON("assets/level7.json");
+  level8 = loadJSON("assets/level7.json");
+  level9 = loadJSON("assets/level7.json");
+  level10 = loadJSON("assets/level7.json");
+  level11 = loadJSON("assets/level7.json");
+  level12 = loadJSON("assets/level7.json");
+  level13 = loadJSON("assets/level7.json");
+  level14 = loadJSON("assets/level7.json");
+  level15 = loadJSON("assets/level7.json");
+  level16 = loadJSON("assets/level7.json");
+  level17 = loadJSON("assets/level7.json");
+  level18 = loadJSON("assets/level7.json");
+  level19 = loadJSON("assets/level7.json");
+  level20 = loadJSON("assets/level7.json");
+  level21 = loadJSON("assets/level7.json");
+  level22 = loadJSON("assets/level7.json");
+  level23 = loadJSON("assets/level7.json");
+  level24 = loadJSON("assets/level7.json");
 }
 
 function setup() {
-  createCanvas(windowHeight, windowHeight);
+  createCanvas(800, 800);
   //sets snow to false
   snow = false;
   //makes a player
@@ -227,8 +248,16 @@ class Player{
       wallArray = [];
       if(wallArray0 === level1){
         wallArray0 = level2;
+        console.log("level 2");
       }
-      
+      else if (wallArray0 === level5){
+        wallArray0 = level4;
+        console.log("level 4");
+      }
+      else if(wallArray0 === level7){
+        wallArray0 = level1;
+        console.log("level 1");
+      }
       this.x = 0 + this.radius;
     }
     //ball border for left
@@ -236,17 +265,40 @@ class Player{
       wallArray = [];
       if(wallArray0 === level2){
         wallArray0 = level1;
+        console.log("level 1");
       }
-      this.x = windowHeight - this.radius;
+      else if(wallArray0 === level4){
+        wallArray0 = level5;
+        console.log("level 5");
+      }
+      else if(wallArray0 === level1){
+        wallArray0 = level7;
+        console.log("level 7");
+      }
+      this.x = 800 - this.radius;
     }
     //ball border for bottom
     if (this.y > height - this.radius){
       wallArray = [];
       if(wallArray0 === level2){
         wallArray0 = level3;
+        console.log("level 3");
       }
       else if(wallArray0 === level3){
         wallArray0 = level4;
+        console.log("level 4");
+      }
+      else if(wallArray0 === level6){
+        wallArray0 = level5;
+        console.log("level 5");
+      }
+      else if(wallArray0 === level1){
+        wallArray0 = level6;
+        console.log("level 6");
+      }
+      else if(wallArray0 === level5){
+        wallArray0 = level5b;
+        console.log("level 5b");
       }
       this.y = 0 + this.radius;
     }
@@ -255,16 +307,30 @@ class Player{
       wallArray=[];
       if(wallArray0 === level3){
         wallArray0 = level2;
+        console.log("level 2");
       }
       else if(wallArray0 === level4){
         wallArray0 = level3;
+        console.log("level 3");
       }
-      this.y = windowHeight - this.radius;
+      else if(wallArray0 === level5){
+        wallArray0 = level6;
+        console.log("level 6");
+      }
+      else if (wallArray0 === level6){
+        wallArray0 = level1;
+        console.log("level 1");
+      }
+      else if(wallArray0 === level5b){
+        wallArray0 = level5;
+        console.log("level 5");
+      }
+      this.y = 800 - this.radius;
     } 
   }
   gravity(){
     if(!this.jumping){
-      this.y += 7;
+      this.y += 9;
     }
   }
 }
