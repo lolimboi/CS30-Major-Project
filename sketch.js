@@ -60,6 +60,7 @@ function setup() {
   
  
   frameRate(48);
+  
 }
 
 function draw() {
@@ -148,6 +149,7 @@ class Player{
     this.timesJumped = 0;
     this.jumping = false;
     this.sprite = thisImage;
+    this.tempheight = this.y;
   }
 
   display(){
@@ -161,6 +163,7 @@ class Player{
     if(keyCode === UP_ARROW){
       this.jumplength = 15;
       this.direction = -1;
+      this.tempheight = this.y;
       if(this.timesJumped === 0){
         this.jumping = true;
       }
@@ -186,16 +189,18 @@ class Player{
     //right jump
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
-        
         console.log(this.timesJumped);
         this.x += 1;
-        this.y += 1 * this.jumplength * this.direction;
+        this.y += 0.9 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
         if(this.direction > 0){
           this.jumplength += 1;
         }
+        //if(this.direction > 0 && this.tempheight === this.y){
+          //this.timesJumped = 1;
+        //}
         else{
           this.jumplength -= 1;
         }
@@ -207,7 +212,7 @@ class Player{
         
         console.log(this.timesJumped);
         this.x -= 1;
-        this.y += 1 * this.jumplength * this.direction;
+        this.y += 0.9 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
@@ -224,7 +229,7 @@ class Player{
       if(this.timesJumped === 0){
         
         console.log(this.timesJumped);
-        this.y += 1 * this.jumplength * this.direction;
+        this.y += 0.9 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
@@ -355,11 +360,13 @@ class Wall{
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
         player.timesJumped = 0;
+
         //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
         player.timesJumped = 0;
+
         //console.log("Right");
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){

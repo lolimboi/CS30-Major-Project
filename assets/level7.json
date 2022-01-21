@@ -17,8 +17,8 @@
   },
   {
     "x": 550,
-    "y": 600,
-    "l": 100,
+    "y": 500,
+    "l": 200,
     "w": 10,
     "wallColor": "black",
     "hit": false
@@ -30,5 +30,14 @@
     "w": 50,
     "wallColor": "black",
     "hit": false
+  },
+  {
+    "x": 300,
+    "y": 600,
+    "l": 10,
+    "w": 100,
+    "wallColor": "black",
+    "hit": false
   }
+
 ]
