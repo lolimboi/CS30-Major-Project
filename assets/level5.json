@@ -16,10 +16,10 @@
     "hit": false
   },
   {
-    "x": 400,
+    "x": 200,
     "y": 0,
     "l": 100,
-    "w": 400,
+    "w": 600,
     "wallColor": "black",
     "hit": false
   }

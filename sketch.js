@@ -12,10 +12,10 @@ let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, w
 let wallArray, wallArray0;
 
 function preload(){
-  jumpRightimg = loadImage("assets/jumpright.png");
-  jumpLeftImg = loadImage("assets/jumpleft.png");
-  walkLeftImg = loadImage("assets/walkleft.png");
-  walkRightImg = loadImage("assets/walkright.png");
+  // jumpRightimg = loadImage("assets/jumpright.png");
+  // jumpLeftImg = loadImage("assets/jumpleft.png");
+  // walkLeftImg = loadImage("assets/walkleft.png");
+  // walkRightImg = loadImage("assets/walkright.png");
   standImg = loadImage("assets/standingstill.png");
   level1 = loadJSON("assets/level1.json");
   level2 = loadJSON("assets/level2.json");
@@ -75,7 +75,7 @@ function draw() {
     testwall.collision(player);
   }
   
-  
+  //console.log(player.tempheight);
   
 
   //displays player, allows movement, and sets gravity
@@ -188,8 +188,7 @@ class Player{
     }
     //right jump
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
-      if(this.timesJumped === 0){
-        console.log(this.timesJumped);
+      if(this.timesJumped === 0 && !this.timesJumped >= 1){
         this.x += 1;
         this.y += 0.9 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
@@ -198,9 +197,6 @@ class Player{
         if(this.direction > 0){
           this.jumplength += 1;
         }
-        //if(this.direction > 0 && this.tempheight === this.y){
-          //this.timesJumped = 1;
-        //}
         else{
           this.jumplength -= 1;
         }
@@ -266,7 +262,7 @@ class Player{
       this.x = 0 + this.radius;
     }
     //ball border for left
-    if (this.x < 0 + this.radius){
+    if (this.x < 0 + this.radius/2){
       wallArray = [];
       if(wallArray0 === level2){
         wallArray0 = level1;
@@ -359,13 +355,25 @@ class Wall{
     if(this.hit){
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
-        player.timesJumped = 0;
+        if(keyIsDown(UP_ARROW) && player.direction > 0){
+          player.timesJumped = 1;
+          player.jumping = false;
+        }
+        else{
+          player.timesJumped = 0;
+        }
 
         //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
-        player.timesJumped = 0;
+        if(keyIsDown(UP_ARROW) && player.direction > 0){
+          player.timesJumped = 1;
+          player.jumping = false;
+        }
+        else{
+          player.timesJumped = 0;
+        }
 
         //console.log("Right");
       }
@@ -375,7 +383,13 @@ class Wall{
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y - player.radius/2;
-        player.timesJumped = 0;
+        if(keyIsDown(UP_ARROW) && player.direction > 0){
+          player.timesJumped = 1;
+          player.jumping = false;
+        }
+        else{
+          player.timesJumped = 0;
+        }
         //console.log("Top");
       }
     }
