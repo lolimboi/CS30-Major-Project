@@ -55,12 +55,8 @@ function setup() {
   
   wallArray0 = level1;
   wallArray = [];
-  
-  
-  
- 
+
   frameRate(48);
-  
 }
 
 function draw() {
@@ -74,8 +70,7 @@ function draw() {
     testwall.display();
     testwall.collision(player);
   }
-  
-  //console.log(player.tempheight);
+
   
 
   //displays player, allows movement, and sets gravity
@@ -149,7 +144,6 @@ class Player{
     this.timesJumped = 0;
     this.jumping = false;
     this.sprite = thisImage;
-    this.tempheight = this.y;
   }
 
   display(){
@@ -163,7 +157,6 @@ class Player{
     if(keyCode === UP_ARROW){
       this.jumplength = 15;
       this.direction = -1;
-      this.tempheight = this.y;
       if(this.timesJumped === 0){
         this.jumping = true;
       }
@@ -302,6 +295,11 @@ class Player{
         console.log("level 5b");
       }
       this.y = 0 + this.radius;
+      if(wallArray0 === level7){
+        this.x = 750;
+        this.y = 675;
+      }
+      
     }
     //ball border for top
     if (this.y < 0 + this.radius){
@@ -361,6 +359,77 @@ class Wall{
         }
         else{
           player.timesJumped = 0;
+        }
+
+        //console.log("Left");
+      }
+      else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
+        player.x = this.x + player.radius/2 + this.w;
+        if(keyIsDown(UP_ARROW) && player.direction > 0){
+          player.timesJumped = 1;
+          player.jumping = false;
+        }
+        else{
+          player.timesJumped = 0;
+        }
+
+        //console.log("Right");
+      }
+      if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y + player.radius/2 + this.l;
+        //console.log("Bottom");
+      }
+      else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
+        player.y = this.y - player.radius/2;
+        if(keyIsDown(UP_ARROW) && player.direction > 0){
+          player.timesJumped = 1;
+          player.jumping = false;
+        }
+        else{
+          player.timesJumped = 0;
+        }
+        //console.log("Top");
+      }
+    }
+  }
+}
+
+class Obstacle{
+  constructor(x, y, l, w){
+    this.x = x;
+    this.y = y;
+    this.l = l;
+    this.w = w;
+    this.obstColor = "yellow";
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
+  }
+  display(){
+    fill(this.obstColor);
+    rect(this.x, this.y, this.w, this.l);
+  }
+  collision(player){
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
+    if(this.hit){
+      if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
+        if(wallArray0 === level12){
+          player.x = 50;
+          player.y = 675;
+        }
+        else if(wallArray0 === level13){
+          player.x = 400;
+          player.y = 750;
+        }
+        else if(wallArray0 === level14){
+          player.x = 600;
+          player.y = 750;
+        }
+        else if(wallArray0 === level16){
+          player.x = 300;
+          player.y = 50;
+        }
+        else if(wallArray0 === level17){
+          player.x = 400;
+          player.y = 750;
         }
 
         //console.log("Left");
