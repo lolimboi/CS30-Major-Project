@@ -3,19 +3,18 @@
 // 1/11/2022
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
 
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightimg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, level24;
-let wallArray, wallArray0;
+let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, level24, wallArray, wallArray0;
+
 
 function preload(){
-  // jumpRightimg = loadImage("assets/jumpright.png");
-  // jumpLeftImg = loadImage("assets/jumpleft.png");
-  // walkLeftImg = loadImage("assets/walkleft.png");
-  // walkRightImg = loadImage("assets/walkright.png");
+  jumpRightImg = loadImage("assets/jumpright.png");
+  jumpLeftImg = loadImage("assets/jumpleft.png");
+  walkLeftImg = loadImage("assets/walkleft.png");
+  walkRightImg = loadImage("assets/walkright.png");
   standImg = loadImage("assets/standingstill.png");
   level1 = loadJSON("assets/level1.json");
   level2 = loadJSON("assets/level2.json");
@@ -60,7 +59,7 @@ function setup() {
 }
 
 function draw() {
-  background("brown");
+  background("red");
   //displays and sets collisions for platforms 
   for(let protowall in wallArray0){
     let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y, wallArray0[protowall].l, wallArray0[protowall].w);
@@ -71,22 +70,17 @@ function draw() {
     testwall.collision(player);
   }
 
-  
-
   //displays player, allows movement, and sets gravity
   player.display();
   player.movement();
   player.gravity();
 
-  
   //allows snow to be created when h is pressed
   let t = frameCount / 30; 
   if(snow){
     for (let i = 0; i < random(5); i++) {
       snowflakes.push(new snowflake()); 
     }
-
-    
   }
   for (let flake of snowflakes) {
     flake.update(t); 
@@ -168,22 +162,26 @@ class Player{
       this.timesJumped++;
       this.jumping = false;
     }
+    this.sprite = standImg;
   }
 
   movement(){
     //left movement
     if(keyIsDown(LEFT_ARROW)){
-      this.x -= 10;
+      this.x -= 7.5;
+      this.sprite = walkLeftImg;
     }
     //right movement
     if(keyIsDown(RIGHT_ARROW)){
-      this.x += 10;
+      this.x += 7.5;
+      this.sprite = walkRightImg;
     }
     //right jump
     if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
+      this.sprite = jumpRightImg;
       if(this.timesJumped === 0 && !this.timesJumped >= 1){
         this.x += 1;
-        this.y += 0.9 * this.jumplength * this.direction;
+        this.y += 0.7 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
@@ -197,11 +195,10 @@ class Player{
     }
     //left jump
     if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
+      this.sprite = jumpLeftImg;
       if(this.timesJumped === 0){
-        
-        console.log(this.timesJumped);
         this.x -= 1;
-        this.y += 0.9 * this.jumplength * this.direction;
+        this.y += 0.7 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
@@ -216,9 +213,7 @@ class Player{
     //upwards jump
     if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
-        
-        console.log(this.timesJumped);
-        this.y += 0.9 * this.jumplength * this.direction;
+        this.y += 0.7 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
           this.direction = 1;
         }
@@ -230,27 +225,17 @@ class Player{
         }
       }
     }
-    //snow effect NEED TO REMOVE
-    if(keyIsDown(72)){
-      snow = true;
-    }
-    else{
-      snow = false;
-    }
     //ball border for right
     if (this.x > width - this.radius){
       wallArray = [];
       if(wallArray0 === level1){
         wallArray0 = level2;
-        console.log("level 2");
       }
       else if (wallArray0 === level5){
         wallArray0 = level4;
-        console.log("level 4");
       }
       else if(wallArray0 === level7){
         wallArray0 = level1;
-        console.log("level 1");
       }
       this.x = 0 + this.radius;
     }
@@ -259,15 +244,12 @@ class Player{
       wallArray = [];
       if(wallArray0 === level2){
         wallArray0 = level1;
-        console.log("level 1");
       }
       else if(wallArray0 === level4){
         wallArray0 = level5;
-        console.log("level 5");
       }
       else if(wallArray0 === level1){
         wallArray0 = level7;
-        console.log("level 7");
       }
       this.x = 800 - this.radius;
     }
@@ -276,23 +258,19 @@ class Player{
       wallArray = [];
       if(wallArray0 === level2){
         wallArray0 = level3;
-        console.log("level 3");
       }
       else if(wallArray0 === level3){
         wallArray0 = level4;
-        console.log("level 4");
+
       }
       else if(wallArray0 === level6){
         wallArray0 = level5;
-        console.log("level 5");
       }
       else if(wallArray0 === level1){
         wallArray0 = level6;
-        console.log("level 6");
       }
       else if(wallArray0 === level5){
         wallArray0 = level5b;
-        console.log("level 5b");
       }
       this.y = 0 + this.radius;
       if(wallArray0 === level7){
@@ -306,30 +284,25 @@ class Player{
       wallArray=[];
       if(wallArray0 === level3){
         wallArray0 = level2;
-        console.log("level 2");
       }
       else if(wallArray0 === level4){
         wallArray0 = level3;
-        console.log("level 3");
       }
       else if(wallArray0 === level5){
         wallArray0 = level6;
-        console.log("level 6");
       }
       else if (wallArray0 === level6){
         wallArray0 = level1;
-        console.log("level 1");
       }
       else if(wallArray0 === level5b){
         wallArray0 = level5;
-        console.log("level 5");
       }
       this.y = 800 - this.radius;
     } 
   }
   gravity(){
     if(!this.jumping){
-      this.y += 9;
+      this.y += 8;
     }
   }
 }
@@ -360,8 +333,6 @@ class Wall{
         else{
           player.timesJumped = 0;
         }
-
-        //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
@@ -372,12 +343,9 @@ class Wall{
         else{
           player.timesJumped = 0;
         }
-
-        //console.log("Right");
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y + player.radius/2 + this.l;
-        //console.log("Bottom");
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y - player.radius/2;
@@ -388,7 +356,6 @@ class Wall{
         else{
           player.timesJumped = 0;
         }
-        //console.log("Top");
       }
     }
   }
@@ -431,35 +398,73 @@ class Obstacle{
           player.x = 400;
           player.y = 750;
         }
-
-        //console.log("Left");
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
-        player.x = this.x + player.radius/2 + this.w;
-        if(keyIsDown(UP_ARROW) && player.direction > 0){
-          player.timesJumped = 1;
-          player.jumping = false;
+        if(wallArray0 === level12){
+          player.x = 50;
+          player.y = 675;
         }
-        else{
-          player.timesJumped = 0;
+        else if(wallArray0 === level13){
+          player.x = 400;
+          player.y = 750;
         }
-
-        //console.log("Right");
+        else if(wallArray0 === level14){
+          player.x = 600;
+          player.y = 750;
+        }
+        else if(wallArray0 === level16){
+          player.x = 300;
+          player.y = 50;
+        }
+        else if(wallArray0 === level17){
+          player.x = 400;
+          player.y = 750;
+        }
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
-        player.y = this.y + player.radius/2 + this.l;
-        //console.log("Bottom");
+        if(wallArray0 === level12){
+          player.x = 50;
+          player.y = 675;
+        }
+        else if(wallArray0 === level13){
+          player.x = 400;
+          player.y = 750;
+        }
+        else if(wallArray0 === level14){
+          player.x = 600;
+          player.y = 750;
+        }
+        else if(wallArray0 === level16){
+          player.x = 300;
+          player.y = 50;
+        }
+        else if(wallArray0 === level17){
+          player.x = 400;
+          player.y = 750;
+        }
+
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
-        player.y = this.y - player.radius/2;
-        if(keyIsDown(UP_ARROW) && player.direction > 0){
-          player.timesJumped = 1;
-          player.jumping = false;
+        if(wallArray0 === level12){
+          player.x = 50;
+          player.y = 675;
         }
-        else{
-          player.timesJumped = 0;
+        else if(wallArray0 === level13){
+          player.x = 400;
+          player.y = 750;
         }
-        //console.log("Top");
+        else if(wallArray0 === level14){
+          player.x = 600;
+          player.y = 750;
+        }
+        else if(wallArray0 === level16){
+          player.x = 300;
+          player.y = 50;
+        }
+        else if(wallArray0 === level17){
+          player.x = 400;
+          player.y = 750;
+        }
       }
     }
   }
