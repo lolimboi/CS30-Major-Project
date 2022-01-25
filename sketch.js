@@ -7,7 +7,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, wallArray, wallArray0;
+let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, wallArray, wallArray0, obstArray, obstArray0, obst1;
 
 
 function preload(){
@@ -40,6 +40,7 @@ function preload(){
   level21 = loadJSON("assets/level21.json");
   level22 = loadJSON("assets/level22.json");
   level23 = loadJSON("assets/level23.json");
+  obst1 = loadJSON("assets/obst1.json");
 }
 
 function setup() {
@@ -50,20 +51,25 @@ function setup() {
   fill(240);
   noStroke();
   player = new Player(width/2, height/2, 10, 12, 30, standImg);
-  
+  //declares the arrays for walls
   wallArray0 = level1;
   wallArray = [];
-
+  //declares the arrays for obsticals
+  obstArray0 = obst1;
+  obstArray = [];
+  //sets the framerate
   frameRate(48);
 }
 
 function draw() {
   background("red");
   //displays and sets collisions for platforms 
+  wallArray = [];
   for(let protowall in wallArray0){
     let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y, wallArray0[protowall].l, wallArray0[protowall].w);
     wallArray.push(testwall);
   }
+  
   for(let testwall of wallArray){
     testwall.display();
     testwall.collision(player);
@@ -137,7 +143,6 @@ class Player{
     this.timesJumped = 0;
     this.jumping = false;
     this.sprite = thisImage;
-    this.climbing = false;
   }
 
   display(){
@@ -212,18 +217,16 @@ class Player{
     }
     //upwards jump
     if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
-      if(!this.climbing){
-        if(this.timesJumped === 0){
-          this.y += 0.7 * this.jumplength * this.direction;
-          if(this.jumplength < 0 && this.direction < 0){
-            this.direction = 1;
-          }
-          if(this.direction > 0){
-            this.jumplength += 1;
-          }
-          else{
-            this.jumplength -= 1;
-          }
+      if(this.timesJumped === 0){
+        this.y += 0.7 * this.jumplength * this.direction;
+        if(this.jumplength < 0 && this.direction < 0){
+          this.direction = 1;
+        }
+        if(this.direction > 0){
+          this.jumplength += 1;
+        }
+        else{
+          this.jumplength -= 1;
         }
       }
     }
@@ -333,9 +336,6 @@ class Player{
       else if(wallArray0 === level5){
         wallArray0 = level5b;
       }
-      else if(wallArray0 === level1){
-        wallArray0 = level6;
-      }
       else if(wallArray0 === level8){
         wallArray0 = level9;
       }
@@ -389,7 +389,7 @@ class Player{
         wallArray0 = level13;
       }
       else if(wallArray0 === level13){
-        wallArray0 = level14;B
+        wallArray0 = level14;
       }
       this.y = 800 - this.radius;
     } 
@@ -430,14 +430,9 @@ class Wall{
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
-        player.climbing = true;
-      if(keyIsDown(UP_ARROW) && player.direction > 0 && keyIsDown(RIGHT_ARROW)){
+        if(keyIsDown(UP_ARROW) && player.direction > 0 && keyIsDown(RIGHT_ARROW)){
           player.timesJumped = 1;
           player.jumping = false;
-        }
-        else if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
-          player.x++;
-          
         }
         else{
           player.timesJumped = 0;
