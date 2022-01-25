@@ -7,7 +7,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, level24, wallArray, wallArray0;
+let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, wallArray, wallArray0;
 
 
 function preload(){
@@ -24,23 +24,22 @@ function preload(){
   level5b = loadJSON("assets/level5b.json");
   level6 = loadJSON("assets/level6.json");
   level7 = loadJSON("assets/level7.json");
-  level8 = loadJSON("assets/level7.json");
-  level9 = loadJSON("assets/level7.json");
-  level10 = loadJSON("assets/level7.json");
-  level11 = loadJSON("assets/level7.json");
-  level12 = loadJSON("assets/level7.json");
-  level13 = loadJSON("assets/level7.json");
-  level14 = loadJSON("assets/level7.json");
-  level15 = loadJSON("assets/level7.json");
-  level16 = loadJSON("assets/level7.json");
-  level17 = loadJSON("assets/level7.json");
-  level18 = loadJSON("assets/level7.json");
-  level19 = loadJSON("assets/level7.json");
-  level20 = loadJSON("assets/level7.json");
-  level21 = loadJSON("assets/level7.json");
-  level22 = loadJSON("assets/level7.json");
-  level23 = loadJSON("assets/level7.json");
-  level24 = loadJSON("assets/level7.json");
+  level8 = loadJSON("assets/level8.json");
+  level9 = loadJSON("assets/level9.json");
+  level10 = loadJSON("assets/level10.json");
+  level11 = loadJSON("assets/level11.json");
+  level12 = loadJSON("assets/level12.json");
+  level13 = loadJSON("assets/level13.json");
+  level14 = loadJSON("assets/level14.json");
+  level15 = loadJSON("assets/level15.json");
+  level16 = loadJSON("assets/level16.json");
+  level17 = loadJSON("assets/level17.json");
+  level18 = loadJSON("assets/level18.json");
+  level19 = loadJSON("assets/level19.json");
+  level20 = loadJSON("assets/level20.json");
+  level21 = loadJSON("assets/level21.json");
+  level22 = loadJSON("assets/level22.json");
+  level23 = loadJSON("assets/level23.json");
 }
 
 function setup() {
@@ -138,6 +137,7 @@ class Player{
     this.timesJumped = 0;
     this.jumping = false;
     this.sprite = thisImage;
+    this.climbing = false;
   }
 
   display(){
@@ -212,16 +212,18 @@ class Player{
     }
     //upwards jump
     if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
-      if(this.timesJumped === 0){
-        this.y += 0.7 * this.jumplength * this.direction;
-        if(this.jumplength < 0 && this.direction < 0){
-          this.direction = 1;
-        }
-        if(this.direction > 0){
-          this.jumplength += 1;
-        }
-        else{
-          this.jumplength -= 1;
+      if(!this.climbing){
+        if(this.timesJumped === 0){
+          this.y += 0.7 * this.jumplength * this.direction;
+          if(this.jumplength < 0 && this.direction < 0){
+            this.direction = 1;
+          }
+          if(this.direction > 0){
+            this.jumplength += 1;
+          }
+          else{
+            this.jumplength -= 1;
+          }
         }
       }
     }
@@ -237,6 +239,36 @@ class Player{
       else if(wallArray0 === level7){
         wallArray0 = level1;
       }
+      else if(wallArray0 === level2){
+        wallArray0 = level8;
+      }
+      else if(wallArray0 === level10){
+        wallArray0 = level11;
+      }
+      else if(wallArray0 === level15){
+        wallArray0 = level14;
+      }
+      else if(wallArray0 === level16){
+        wallArray0 = level15;
+      }
+      else if(wallArray0 === level17){
+        wallArray0 = level16;
+      }
+      else if(wallArray0 === level18){
+        wallArray0 = level17;
+      }
+      else if(wallArray0 === level20){
+        wallArray0 = level19;
+      }
+      else if(wallArray0 === level21){
+        wallArray0 = level20;
+      }
+      else if(wallArray0 === level22){
+        wallArray0 = level21;
+      }
+      else if(wallArray0 === level23){
+        wallArray0 = level22;
+      }
       this.x = 0 + this.radius;
     }
     //ball border for left
@@ -251,6 +283,36 @@ class Player{
       else if(wallArray0 === level1){
         wallArray0 = level7;
       }
+      else if(wallArray0 === level8){
+        wallArray0 = level2;
+      }
+      else if(wallArray0 === level11){
+        wallArray0 = level10;
+      }
+      else if(wallArray0 === level14){
+        wallArray0 = level15;
+      }
+      else if(wallArray0 === level15){
+        wallArray0 = level16;
+      }
+      else if(wallArray0 === level16){
+        wallArray0 = level17;
+      }
+      else if(wallArray0 === level17){
+        wallArray0 = level18;
+      }
+      else if(wallArray0 === level19){
+        wallArray0 = level20;
+      }
+      else if(wallArray0 === level20){
+        wallArray0 = level21;
+      }
+      else if(wallArray0 === level21){
+        wallArray0 = level22;
+      }
+      else if(wallArray0 === level22){
+        wallArray0 = level23;
+      }
       this.x = 800 - this.radius;
     }
     //ball border for bottom
@@ -261,7 +323,6 @@ class Player{
       }
       else if(wallArray0 === level3){
         wallArray0 = level4;
-
       }
       else if(wallArray0 === level6){
         wallArray0 = level5;
@@ -271,6 +332,24 @@ class Player{
       }
       else if(wallArray0 === level5){
         wallArray0 = level5b;
+      }
+      else if(wallArray0 === level1){
+        wallArray0 = level6;
+      }
+      else if(wallArray0 === level8){
+        wallArray0 = level9;
+      }
+      else if(wallArray0 === level9){
+        wallArray0 = level10;
+      }
+      else if(wallArray0 === level12){
+        wallArray0 = level11;
+      }
+      else if(wallArray0 === level13){
+        wallArray0 = level12;
+      }
+      else if(wallArray0 === level14){
+        wallArray0 = level13;
       }
       this.y = 0 + this.radius;
       if(wallArray0 === level7){
@@ -297,11 +376,26 @@ class Player{
       else if(wallArray0 === level5b){
         wallArray0 = level5;
       }
+      else if(wallArray0 === level9){
+        wallArray0 = level8;
+      }
+      else if(wallArray0 === level10){
+        wallArray0 = level9;
+      }
+      else if(wallArray0 === level11){
+        wallArray0 = level12;
+      }
+      else if(wallArray0 === level12){
+        wallArray0 = level13;
+      }
+      else if(wallArray0 === level13){
+        wallArray0 = level14;B
+      }
       this.y = 800 - this.radius;
     } 
   }
   gravity(){
-    if(!this.jumping){
+    if(!this.jumping && !this.climbing){
       this.y += 8;
     }
   }
@@ -336,14 +430,20 @@ class Wall{
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
-        if(keyIsDown(UP_ARROW) && player.direction > 0){
+        player.climbing = true;
+      if(keyIsDown(UP_ARROW) && player.direction > 0 && keyIsDown(RIGHT_ARROW)){
           player.timesJumped = 1;
           player.jumping = false;
+        }
+        else if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
+          player.x++;
+          
         }
         else{
           player.timesJumped = 0;
         }
       }
+
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y + player.radius/2 + this.l;
       }
