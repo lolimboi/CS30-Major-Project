@@ -2,7 +2,7 @@
   {
     "x": 10,
     "y": 0,
-    "l": 600,
+    "l": 800,
     "w": 10,
     "wallColor": "black",
     "hit": false
@@ -10,7 +10,7 @@
   {
     "x": 590,
     "y": 0,
-    "l": 700,
+    "l": 800,
     "w": 10,
     "wallColor": "black",
     "hit": false

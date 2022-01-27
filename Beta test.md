@@ -11,5 +11,3 @@
 - better climbing mechanic
 - game lag periodicly  
 - Include Music/SFX
-
-## 

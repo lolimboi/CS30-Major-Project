@@ -7,7 +7,7 @@
 
 
 let snowflakes = []; 
-let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, level19, level20, level21, level22, level23, wallArray, wallArray0, obstArray, obstArray0, obst1;
+let player, testwall, testwall2, snow, jumpRightImg, jumpLeftImg, walkLeftImg, walkRightImg, standImg, level1, level2, level3, level4, level5, level5b, level6, level7, level8, level9, level10, level11, level12, level13, level14, level15, level16, level17, level18, wallArray, wallArray0, obstArray, obstArray0, obst1, obst2, obst3, obst4, obst5, level7checker, level5checker, level12checker, lever1, lever2, lever3, doorChecker, door, state, bg, bg1, bg2, spikes, key, doorimg;
 
 
 function preload(){
@@ -16,6 +16,12 @@ function preload(){
   walkLeftImg = loadImage("assets/walkleft.png");
   walkRightImg = loadImage("assets/walkright.png");
   standImg = loadImage("assets/standingstill.png");
+  bg1 = loadImage("assets/Background1.png");
+  bg2 = loadImage("assets/Background2.png");
+  path = loadImage("assets/path.png");
+  spikes = loadImage("assets/crystalspikes.png");
+  key = loadImage("assets/key.png");
+  doorimg = loadImage("assets/door.png");
   level1 = loadJSON("assets/level1.json");
   level2 = loadJSON("assets/level2.json");
   level3 = loadJSON("assets/level3.json");
@@ -35,12 +41,11 @@ function preload(){
   level16 = loadJSON("assets/level16.json");
   level17 = loadJSON("assets/level17.json");
   level18 = loadJSON("assets/level18.json");
-  level19 = loadJSON("assets/level19.json");
-  level20 = loadJSON("assets/level20.json");
-  level21 = loadJSON("assets/level21.json");
-  level22 = loadJSON("assets/level22.json");
-  level23 = loadJSON("assets/level23.json");
   obst1 = loadJSON("assets/obst1.json");
+  obst2 = loadJSON("assets/obst2.json");
+  obst3 = loadJSON("assets/obst3.json");
+  obst4 = loadJSON("assets/obst4.json");
+  obst5 = loadJSON("assets/obst5.json");
 }
 
 function setup() {
@@ -55,46 +60,111 @@ function setup() {
   wallArray0 = level1;
   wallArray = [];
   //declares the arrays for obsticals
-  obstArray0 = obst1;
+  obstArray0 = [];
   obstArray = [];
+  
+  level7checker = false;
+  level5checker = false;
+  level12checker = false;
+  lever1 = new Lever(20, 650);
+  lever2 = new Lever(110, 650);
+  lever3 = new Lever(275, 50);
+  doorChecker = 0;
+  door = new Wall(200, 10, 690, 300, doorimg);
   //sets the framerate
   frameRate(48);
+  state = 1;
 }
 
 function draw() {
-  background("red");
+  if(state === 1){
+    background("blue");
+    textSize(64);
+    text('Hopguy', 300, 200);
+    textSize(20);
+    text('How to play: Use Left and Right arrow keys to move, use space to jump. You can jump up walls by mashing space. If you collect three keys, you open the door at the end!', 50, 350, 200);
+    text('Press Enter to Begin!', 500, 350, 200);
+  }
+  if(state === 2){
+  background(bg);
   //displays and sets collisions for platforms 
   wallArray = [];
   for(let protowall in wallArray0){
-    let testwall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y, wallArray0[protowall].l, wallArray0[protowall].w);
-    wallArray.push(testwall);
+    let wall = new Wall(wallArray0[protowall].x, wallArray0[protowall].y, wallArray0[protowall].l, wallArray0[protowall].w, path);
+    wallArray.push(wall);
   }
   
-  for(let testwall of wallArray){
-    testwall.display();
-    testwall.collision(player);
+  for(let wall of wallArray){
+    wall.display();
+    wall.collision(player);
   }
+
+  obstArray = [];
+  for(let protoobst in obstArray0){
+    let testobst = new Obstacle(obstArray0[protoobst].x, obstArray0[protoobst].y, obstArray0[protoobst].l, obstArray0[protoobst].w);
+    obstArray.push(testobst);
+  }
+  
+  for(let testobst of obstArray){
+    testobst.display();
+    testobst.collision(player);
+  }
+
+  if(wallArray0 === level7 && !level7checker){
+    lever1.display();
+    lever1.collision(player);
+  }
+  else if(wallArray0 === level5 && !level5checker){
+    lever2.display();
+    lever2.collision(player);
+  }
+  else if(wallArray0 === level12 && !level12checker){
+    lever3.display();
+    lever3.collision(player);
+  }
+  
+  if(wallArray0 === level18 && doorChecker !== 3){
+    door.display();
+    door.collision(player);
+  }
+  
+
 
   //displays player, allows movement, and sets gravity
   player.display();
   player.movement();
   player.gravity();
 
-  //allows snow to be created when h is pressed
-  let t = frameCount / 30; 
-  if(snow){
-    for (let i = 0; i < random(5); i++) {
-      snowflakes.push(new snowflake()); 
+    //allows snow to be created when h is pressed
+    let t = frameCount / 30; 
+    if(snow){
+      for (let i = 0; i < random(5); i++) {
+        snowflakes.push(new snowflake()); 
+      }
+    }
+    for (let flake of snowflakes) {
+      flake.update(t); 
+      flake.display(); 
+    }
+
+    if(wallArray0 === level18 && player.x >= 10 && player.x <= 200){
+      state = 3;
     }
   }
-  for (let flake of snowflakes) {
-    flake.update(t); 
-    flake.display(); 
+  else if(state === 3){
+    background('blue');
+    textSize(64);
+    text('Congrats!', 275, 400);
   }
+  
 }
 
 function keyPressed() {
   player.handleKeys();
+  if(keyCode === 13){
+    state = 2;
+    bg = bg1;
+  }
 }
 
 function keyReleased(){
@@ -153,7 +223,7 @@ class Player{
   }
 
   handleKeys(){
-    if(keyCode === UP_ARROW){
+    if(keyCode === 32){
       this.jumplength = 15;
       this.direction = -1;
       if(this.timesJumped === 0){
@@ -163,7 +233,7 @@ class Player{
   }
 
   handleKeys2(){
-    if(keyCode === UP_ARROW){
+    if(keyCode === 32){
       this.timesJumped++;
       this.jumping = false;
     }
@@ -182,7 +252,7 @@ class Player{
       this.sprite = walkRightImg;
     }
     //right jump
-    if(keyIsDown(UP_ARROW) && keyIsDown(RIGHT_ARROW)){
+    if(keyIsDown(32) && keyIsDown(RIGHT_ARROW)){
       this.sprite = jumpRightImg;
       if(this.timesJumped === 0 && !this.timesJumped >= 1){
         this.x += 1;
@@ -199,7 +269,7 @@ class Player{
       }
     }
     //left jump
-    if(keyIsDown(UP_ARROW) && keyIsDown(LEFT_ARROW)){
+    if(keyIsDown(32) && keyIsDown(LEFT_ARROW)){
       this.sprite = jumpLeftImg;
       if(this.timesJumped === 0){
         this.x -= 1;
@@ -216,7 +286,7 @@ class Player{
       }
     }
     //upwards jump
-    if(keyIsDown(UP_ARROW) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
+    if(keyIsDown(32) && !keyIsDown(LEFT_ARROW) && !keyIsDown(RIGHT_ARROW)){
       if(this.timesJumped === 0){
         this.y += 0.7 * this.jumplength * this.direction;
         if(this.jumplength < 0 && this.direction < 0){
@@ -247,30 +317,25 @@ class Player{
       }
       else if(wallArray0 === level10){
         wallArray0 = level11;
+        obstArray0 = obst1;
       }
       else if(wallArray0 === level15){
         wallArray0 = level14;
+        snow = false; 
+        snowflakes = [];
+        obstArray0 = [];
       }
       else if(wallArray0 === level16){
         wallArray0 = level15;
+        obstArray0 = obst3;
       }
       else if(wallArray0 === level17){
         wallArray0 = level16;
+        obstArray0 = obst4;
       }
       else if(wallArray0 === level18){
         wallArray0 = level17;
-      }
-      else if(wallArray0 === level20){
-        wallArray0 = level19;
-      }
-      else if(wallArray0 === level21){
-        wallArray0 = level20;
-      }
-      else if(wallArray0 === level22){
-        wallArray0 = level21;
-      }
-      else if(wallArray0 === level23){
-        wallArray0 = level22;
+        obstArray0 = obst5;
       }
       this.x = 0 + this.radius;
     }
@@ -291,30 +356,24 @@ class Player{
       }
       else if(wallArray0 === level11){
         wallArray0 = level10;
+        obstArray0 = [];
       }
       else if(wallArray0 === level14){
         wallArray0 = level15;
+        obstArray0 = obst3;
+        snow = true;
       }
       else if(wallArray0 === level15){
         wallArray0 = level16;
+        obstArray0 = obst4;
       }
       else if(wallArray0 === level16){
         wallArray0 = level17;
+        obstArray0 = obst5; 
       }
       else if(wallArray0 === level17){
         wallArray0 = level18;
-      }
-      else if(wallArray0 === level19){
-        wallArray0 = level20;
-      }
-      else if(wallArray0 === level20){
-        wallArray0 = level21;
-      }
-      else if(wallArray0 === level21){
-        wallArray0 = level22;
-      }
-      else if(wallArray0 === level22){
-        wallArray0 = level23;
+        obstArray0 = [];
       }
       this.x = 800 - this.radius;
     }
@@ -344,12 +403,15 @@ class Player{
       }
       else if(wallArray0 === level12){
         wallArray0 = level11;
+        obstArray0 = obst1;
       }
       else if(wallArray0 === level13){
         wallArray0 = level12;
       }
       else if(wallArray0 === level14){
         wallArray0 = level13;
+        obstArray0 = obst2;
+        bg = bg1;
       }
       this.y = 0 + this.radius;
       if(wallArray0 === level7){
@@ -384,18 +446,21 @@ class Player{
       }
       else if(wallArray0 === level11){
         wallArray0 = level12;
+        obstArray0 = obst2;
       }
       else if(wallArray0 === level12){
         wallArray0 = level13;
       }
       else if(wallArray0 === level13){
         wallArray0 = level14;
+        obstArray0 = [];
+        bg = bg2;
       }
       this.y = 800 - this.radius;
     } 
   }
   gravity(){
-    if(!this.jumping && !this.climbing){
+    if(!this.jumping){
       this.y += 8;
     }
   }
@@ -403,16 +468,17 @@ class Player{
 
 //wall/platform creation and behaviour
 class Wall{
-  constructor(x, y, l, w){
+  constructor(x, y, l, w, img){
     this.x = x;
     this.y = y;
     this.l = l;
     this.w = w;
-    this.wallColor = "black";
+    this.img = img;
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
   }
   display(){
-    fill(this.wallColor);
+    image(this.img, this.x, this.y, this.w, this.l);
+    noFill();
     rect(this.x, this.y, this.w, this.l);
   }
   collision(player){
@@ -420,7 +486,7 @@ class Wall{
     if(this.hit){
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x - player.radius/2;
-        if(keyIsDown(UP_ARROW) && player.direction > 0){
+        if(keyIsDown(32) && player.direction > 0){
           player.timesJumped = 1;
           player.jumping = false;
         }
@@ -430,7 +496,7 @@ class Wall{
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
         player.x = this.x + player.radius/2 + this.w;
-        if(keyIsDown(UP_ARROW) && player.direction > 0 && keyIsDown(RIGHT_ARROW)){
+        if(keyIsDown(32) && player.direction > 0 && keyIsDown(RIGHT_ARROW)){
           player.timesJumped = 1;
           player.jumping = false;
         }
@@ -444,7 +510,7 @@ class Wall{
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
         player.y = this.y - player.radius/2;
-        if(keyIsDown(UP_ARROW) && player.direction > 0){
+        if(keyIsDown(32) && player.direction > 0){
           player.timesJumped = 1;
           player.jumping = false;
         }
@@ -462,32 +528,36 @@ class Obstacle{
     this.y = y;
     this.l = l;
     this.w = w;
-    this.obstColor = "yellow";
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
   }
   display(){
-    fill(this.obstColor);
+    image(spikes, this.x, this.y, this.w, this.l);
+    noFill();
     rect(this.x, this.y, this.w, this.l);
   }
   collision(player){
     this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
     if(this.hit){
       if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
-        if(wallArray0 === level12){
+        if(wallArray0 === level11){
           player.x = 50;
           player.y = 675;
         }
+        else if(wallArray0 === level12){
+          player.x = 300;
+          player.y = 700;
+        }
         else if(wallArray0 === level13){
-          player.x = 400;
-          player.y = 750;
+          player.x = 300;
+          player.y = 700;
         }
-        else if(wallArray0 === level14){
-          player.x = 600;
-          player.y = 750;
-        }
-        else if(wallArray0 === level16){
+        else if(wallArray0 === level15){
           player.x = 300;
           player.y = 50;
+        }
+        else if(wallArray0 === level16){
+          player.x = 400;
+          player.y = 750;
         }
         else if(wallArray0 === level17){
           player.x = 400;
@@ -495,21 +565,25 @@ class Obstacle{
         }
       }
       else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
-        if(wallArray0 === level12){
+        if(wallArray0 === level11){
           player.x = 50;
           player.y = 675;
         }
+        else if(wallArray0 === level12){
+          player.x = 300;
+          player.y = 700;
+        }
         else if(wallArray0 === level13){
-          player.x = 400;
-          player.y = 750;
+          player.x = 300;
+          player.y = 700;
         }
-        else if(wallArray0 === level14){
-          player.x = 600;
-          player.y = 750;
-        }
-        else if(wallArray0 === level16){
+        else if(wallArray0 === level15){
           player.x = 300;
           player.y = 50;
+        }
+        else if(wallArray0 === level16){
+          player.x = 400;
+          player.y = 750;
         }
         else if(wallArray0 === level17){
           player.x = 400;
@@ -517,48 +591,118 @@ class Obstacle{
         }
       }
       if (player.y > this.y && player.y <= this.y + this.l + player.radius/2 && player.x > this.x && player.x < this.x + this.w){
-        if(wallArray0 === level12){
+        if(wallArray0 === level11){
           player.x = 50;
           player.y = 675;
         }
+        else if(wallArray0 === level12){
+          player.x = 300;
+          player.y = 700;
+        }
         else if(wallArray0 === level13){
-          player.x = 400;
-          player.y = 750;
+          player.x = 300;
+          player.y = 700;
         }
-        else if(wallArray0 === level14){
-          player.x = 600;
-          player.y = 750;
-        }
-        else if(wallArray0 === level16){
+        else if(wallArray0 === level15){
           player.x = 300;
           player.y = 50;
+        }
+        else if(wallArray0 === level16){
+          player.x = 400;
+          player.y = 750;
         }
         else if(wallArray0 === level17){
           player.x = 400;
           player.y = 750;
         }
-
       }
       else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
-        if(wallArray0 === level12){
+        if(wallArray0 === level11){
           player.x = 50;
           player.y = 675;
         }
+        else if(wallArray0 === level12){
+          player.x = 300;
+          player.y = 700;
+        }
         else if(wallArray0 === level13){
-          player.x = 400;
-          player.y = 750;
+          player.x = 300;
+          player.y = 700;
         }
-        else if(wallArray0 === level14){
-          player.x = 600;
-          player.y = 750;
-        }
-        else if(wallArray0 === level16){
+        else if(wallArray0 === level15){
           player.x = 300;
           player.y = 50;
         }
+        else if(wallArray0 === level16){
+          player.x = 200;
+          player.y = 590;
+        }
         else if(wallArray0 === level17){
-          player.x = 400;
-          player.y = 750;
+          player.x = 600;
+          player.y = 590;
+        }
+      }
+    }
+  }
+}
+
+class Lever{
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.l = 50;
+    this.w = 50;
+    
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
+  }
+  display(){
+    image(key, this.x, this.y, this.w, this.l);
+    noFill();
+    rect(this.x, this.y, this.w, this.l);
+  }
+  collision(player){
+    this.hit = collideRectCircle(this.x, this.y, this.w, this.l, player.x, player.y, player.radius);
+    if(this.hit){
+      if (player.x <= this.x && player.x >= this.x - player.radius/2  && player.y >= this.y && player.y <= this.y + this.l){
+        if(wallArray0 === level7){
+          doorChecker++;
+          level7checker = true;
+        }
+        if(wallArray0 === level5){
+          doorChecker++;
+          level5checker = true;
+        }
+        if(wallArray0 === level12){
+          doorChecker++;
+          level12checker = true;
+        }
+      }
+      else if (player.x > this.x && player.x <= this.x + this.w + player.radius/2 && player.y >= this.y && player.y <= this.y + this.l){
+        if(wallArray0 === level7){
+          doorChecker++;
+          level7checker = true;
+        }
+        if(wallArray0 === level5){
+          doorChecker++;
+          level5checker = true;
+        }
+        if(wallArray0 === level12){
+          doorChecker++;
+          level12checker = true;
+        }
+      }
+      else if (player.y < this.y && player.y + player.radius/2 >= this.y && player.x > this.x && player.x < this.x + this.w){
+        if(wallArray0 === level7){
+          doorChecker++;
+          level7checker = true;
+        }
+        if(wallArray0 === level5){
+          doorChecker++;
+          level5checker = true;
+        }
+        if(wallArray0 === level12){
+          doorChecker++;
+          level12checker = true;
         }
       }
     }
